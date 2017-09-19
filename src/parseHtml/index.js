@@ -11,8 +11,7 @@ export default function parseHtml(rawHtml) {
   const parser = new htmlparser.Parser(
     new htmlparser.DomHandler((_err, dom) => {
       parsedHtml = dom;
-    }),
-    options,
+    }, options),
   );
   parser.write(rawHtml);
   parser.end();

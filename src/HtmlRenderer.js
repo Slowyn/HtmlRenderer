@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { View, ScrollView, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import data from './parseHtml/temp';
 import parseHtml from './parseHtml';
 
 const defaultStylesForTags = StyleSheet.create({
-  p: {},
+  p: {
+    fontSize: 16,
+    color: '#444',
+  },
   b: {
     fontWeight: 'bold',
   },
@@ -13,12 +16,9 @@ const defaultStylesForTags = StyleSheet.create({
   },
 });
 
-export default class BookPage extends Component {
+export default class HtmlRenderer extends Component {
   renderDomToRNViews(dom, key = 'initial') {
     return dom.reduce((acc, node, i) => {
-      if (node.type === 'br') {
-        console.log('HOOOOOORAY!!! BR HEREE');
-      }
       if (node.type === 'text') {
         const str = node.data;
         if (!str.length) return acc;
@@ -27,9 +27,14 @@ export default class BookPage extends Component {
       }
 
       if (node.type === 'tag') {
+        if (node.name === 'br') {
+          acc.push(<Text key={`${key}${i}`}>{'\n'}</Text>);
+        }
         if (node.name === 'p') {
+          // let's use goofy indentation implementation
           acc.push(
-            <Text key={`${key}${i}`}>
+            <Text style={defaultStylesForTags.p} key={`${key}${i}`}>
+              {'       '}
               {this.renderDomToRNViews(node.children, i)}
             </Text>,
           );
