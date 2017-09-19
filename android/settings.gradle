@@ -1,0 +1,3 @@
+rootProject.name = 'HtmlRenderer'
+
+include ':app'
