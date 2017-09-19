@@ -54,7 +54,12 @@ export default class BookPage extends Component {
     fetch('https://cap_america.inkitt.de/1/stories/106766/chapters/1')
       .then(res => res.json())
       .then(res => this.setState({ html: res.response.text, isLoading: false }))
-      .catch(e => this.setState({ error: e.message, isLoading: false }));
+      .catch(e =>
+        this.setState({
+          error: e.message || 'Failed to load data',
+          isLoading: false,
+        }),
+      );
   }
 
   render() {
