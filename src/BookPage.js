@@ -5,7 +5,13 @@
  */
 
 import React, { Component } from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
 
 import HtmlRenderer from './HtmlRenderer';
 
@@ -33,12 +39,36 @@ const styles = StyleSheet.create({
 });
 
 export default class BookPage extends Component {
+  state = {
+    isLoading: false,
+    error: undefined,
+    html: '',
+  };
+
+  componentDidMount() {
+    this.fetchBookPage();
+  }
+
+  fetchBookPage() {
+    this.setState({ isLoading: true });
+    fetch('https://cap_america.inkitt.de/1/stories/106766/chapters/1')
+      .then(res => res.json())
+      .then(res => this.setState({ html: res.response.text, isLoading: false }))
+      .catch(e => this.setState({ error: e.message, isLoading: false }));
+  }
+
   render() {
+    const { error, html, isLoading } = this.state;
     return (
       <View style={styles.container}>
-        <ScrollView contentContainerStyle={styles.pageContainer}>
-          <HtmlRenderer />
-        </ScrollView>
+        {isLoading && <ActivityIndicator />}
+        {!isLoading &&
+          !error && (
+            <ScrollView contentContainerStyle={styles.pageContainer}>
+              <HtmlRenderer html={html} />
+            </ScrollView>
+          )}
+        {!isLoading && error && <Text>{error} :(</Text>}
       </View>
     );
   }

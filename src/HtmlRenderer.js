@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import data from './parseHtml/temp';
 import parseHtml from './parseHtml';
@@ -21,6 +21,7 @@ export default class HtmlRenderer extends Component {
     iStyles: Text.propTypes.style,
     bStyles: Text.propTypes.style,
     pStyles: Text.propTypes.style,
+    html: PropTypes.string.isRequired,
   };
   static defaultProps = {
     iStyles: defaultStylesForTags.i,
@@ -68,7 +69,7 @@ export default class HtmlRenderer extends Component {
   }
 
   render() {
-    const dom = parseHtml(data.response.text);
+    const dom = parseHtml(this.props.html);
     const views = this.renderDomToRNViews(dom);
     return <View style={{ flex: 1 }}>{views}</View>;
   }
