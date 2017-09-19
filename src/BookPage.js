@@ -5,7 +5,7 @@
  */
 
 import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
 
 import HtmlRenderer from './HtmlRenderer';
 
@@ -26,18 +26,17 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+  pageContainer: {
+    paddingVertical: 40,
+    paddingHorizontal: 10,
+  },
 });
 
 export default class BookPage extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <ScrollView
-          contentContainerStyle={{
-            paddingVertical: 40,
-            paddingHorizontal: 10,
-          }}
-        >
+        <ScrollView contentContainerStyle={styles.pageContainer}>
           <HtmlRenderer />
         </ScrollView>
       </View>

@@ -17,7 +17,23 @@ const defaultStylesForTags = StyleSheet.create({
 });
 
 export default class HtmlRenderer extends Component {
+  static propTypes = {
+    iStyles: Text.propTypes.style,
+    bStyles: Text.propTypes.style,
+    pStyles: Text.propTypes.style,
+  };
+  static defaultProps = {
+    iStyles: defaultStylesForTags.i,
+    bStyles: defaultStylesForTags.b,
+    pStyles: defaultStylesForTags.p,
+  };
   renderDomToRNViews(dom, key = 'initial') {
+    const { iStyles, bStyles, pStyles } = this.props;
+    const styles = {
+      i: iStyles,
+      b: bStyles,
+      p: pStyles,
+    };
     return dom.reduce((acc, node, i) => {
       if (node.type === 'text') {
         const str = node.data;
@@ -33,7 +49,7 @@ export default class HtmlRenderer extends Component {
         if (node.name === 'p') {
           // let's use goofy indentation implementation
           acc.push(
-            <Text style={defaultStylesForTags.p} key={`${key}${i}`}>
+            <Text style={styles.p} key={`${key}${i}`}>
               {'       '}
               {this.renderDomToRNViews(node.children, i)}
             </Text>,
@@ -41,7 +57,7 @@ export default class HtmlRenderer extends Component {
         }
         if (node.name === 'b' || node.name === 'i') {
           acc.push(
-            <Text key={`${key}${i}`} style={defaultStylesForTags[node.name]}>
+            <Text key={`${key}${i}`} style={styles[node.name]}>
               {this.renderDomToRNViews(node.children)}
             </Text>,
           );
