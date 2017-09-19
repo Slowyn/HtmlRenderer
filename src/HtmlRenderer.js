@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import data from './parseHtml/temp';
 import parseHtml from './parseHtml';
 
 const defaultStylesForTags = StyleSheet.create({
