@@ -3,8 +3,6 @@ import { View, ScrollView, Text, StyleSheet } from 'react-native';
 import data from './parseHtml/temp';
 import parseHtml from './parseHtml';
 
-const allowedTags = ['p', 'b', 'i'];
-
 const defaultStylesForTags = StyleSheet.create({
   p: {},
   b: {
@@ -18,6 +16,9 @@ const defaultStylesForTags = StyleSheet.create({
 export default class BookPage extends Component {
   renderDomToRNViews(dom, key = 'initial') {
     return dom.reduce((acc, node, i) => {
+      if (node.type === 'br') {
+        console.log('HOOOOOORAY!!! BR HEREE');
+      }
       if (node.type === 'text') {
         const str = node.data;
         if (!str.length) return acc;
@@ -28,9 +29,9 @@ export default class BookPage extends Component {
       if (node.type === 'tag') {
         if (node.name === 'p') {
           acc.push(
-            <View key={`${key}${i}`}>
+            <Text key={`${key}${i}`}>
               {this.renderDomToRNViews(node.children, i)}
-            </View>,
+            </Text>,
           );
         }
         if (node.name === 'b' || node.name === 'i') {
